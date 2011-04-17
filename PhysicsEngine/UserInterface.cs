@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
-using Compiler;
+using PhysicsEngine;
+using PhysicsEngine.Compiler;
 
 namespace UserInterface {
 	public enum LogType { input, output, token, parseTree, all, allTokens, postFixedTokens }
@@ -35,6 +36,12 @@ namespace UserInterface {
 			objectLog.Add(new Tuple<object, LogType>(type.ToString().ToUpper() + ": " + obj.Visualize(), type));
 			return obj;
 		}
+
+		public static Node AddToLog(this Node obj, LogType type) {
+			objectLog.Add(new Tuple<object, LogType>(type.ToString().ToUpper() + ": " + obj.Visualize("", true), type));
+			return obj;
+		}
+
 
 		public static void Display(string textToDisplay) {
 			Debug.Print(textToDisplay);

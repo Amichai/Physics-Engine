@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Compiler\ParseTree.cs" />
     <Compile Include="Compiler\Tokens.cs" />
     <Compile Include="Compiler\PostFixedTokens.cs" />
     <Compile Include="Compiler\Token.cs" />
@@ -56,7 +57,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemLibraries\Constants.cs" />
-    <Compile Include="SystemLibraries\DerivationLibraries.cs" />
+    <Compile Include="SystemLibraries\DerivationLibrary.cs" />
     <Compile Include="SystemLibraries\Variables.cs" />
     <Compile Include="UserInterface.cs" />
   </ItemGroup>

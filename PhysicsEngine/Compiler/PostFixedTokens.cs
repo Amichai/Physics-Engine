@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PhysicsEngine.Compiler;
 
-namespace Compiler {
+namespace PhysicsEngine {
 	class PostfixedTokens : Tokens{
 		private void handleOperator(Token token) {
-			//Test precedence
 			//If the current op has higher precedence, add to the stack
 			//true if the last operator on the stack has precedence over the current operator
 			while (operatorStack.Count() > 0 && operatorStack.First().TokenType == TokenType.arithmeticOp
@@ -89,81 +89,18 @@ namespace Compiler {
 		public override void Add(Token token) {
 			tokens.Add(token);
 		}
-		Node parseTree = new Node();
-		Stack<double> evalStack = new Stack<double>();
-		//Change this to build parse tree
-		public double Evaluate() {
-			//TODO: Currently we are evaluating. Instead of evaluating we can build a parse tree
+		
+		public Node BuildParseTree() {
+			Node parseTree = new Node();
 			foreach (Token token in tokens) {
 				if (token.TokenType == TokenType.number) {
-					evalStack.Push(token.TokenNumValue);
-					//parseTree.Push(token.TokenNumValue);
+					parseTree.Push(token.TokenNumValue);
 				}
 				if (token.TokenType == TokenType.arithmeticOp) {
-					double val1, val2;
-					switch (token.TokenString) {
-						case "+":
-							evalStack.Push(evalStack.Pop() + evalStack.Pop());
-							//parseTree.Push(token.TokenNumValue);
-							//Get rid of the eval stack. Evaluate each node in the parse tree
-							break;
-						case "-":
-							evalStack.Push(-evalStack.Pop() + evalStack.Pop());
-							break;
-						case "*":
-							evalStack.Push(evalStack.Pop() * evalStack.Pop());
-							break;
-						case "/":
-							val1 = evalStack.Pop();
-							val2 = evalStack.Pop();
-							evalStack.Push(val2 / val1);
-							break;
-						case "%":
-							evalStack.Push(evalStack.Pop() % evalStack.Pop());
-							break;
-						case "^":
-							val1 = evalStack.Pop();
-							val2 = evalStack.Pop();
-							evalStack.Push(Math.Pow(val2, val1));
-							break;
-						default:
-							throw new Exception("unknown operator");
-					}
-				}
-				if (token.TokenType == TokenType.function) {
-					switch (token.TokenString) {
-						case "Print":
-							break;
-						case "Add":
-							break;
-						case "Sum":
-							break;
-						case "Derivative":
-							break;
-						case "Integral":
-							break;
-						default:
-							throw new Exception("Function unknown");
-					}
+					parseTree.Push(token.TokenString);
 				}
 			}
-
-			if (evalStack.Count() != 1)
-				throw new Exception("Parser evaluation error");
-			return evalStack.Pop();
-		}
-	}
-
-	class Node {
-		List<Node> children = new List<Node>();
-		string name = string.Empty;
-
-		internal void Add() {
-			throw new NotImplementedException();
-		}
-
-		internal void Push() {
-			throw new NotImplementedException();
+			return parseTree.children.First();
 		}
 	}
 }

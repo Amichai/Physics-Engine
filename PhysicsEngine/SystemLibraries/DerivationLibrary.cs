@@ -5,7 +5,7 @@ using System.Text;
 using PhysicsEngine.Expression;
 
 namespace PhysicsEngine.SystemLibraries {
-	class DerivationLibraries {
+	class DerivationLibrary {
 		List<Equation> equations = new List<Equation>() {
 
 		};

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Compiler {
+namespace PhysicsEngine {
 	class Tokens{
 		public List<Token> tokens = new List<Token>();
 

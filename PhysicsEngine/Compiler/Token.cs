@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Compiler {
+namespace PhysicsEngine {
 	class Token {
 		private static readonly HashSet<string> functionLibrary = new HashSet<string>() { "Print", "Add", "Sum", "Derivative", "Integral" };
 		public TokenType TokenType;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UserInterface;
 
-namespace Compiler {
+namespace PhysicsEngine {
 	enum TokenType { number, function, charString, arithmeticOp, syntaxChar, empty, closedBrace, openBrace, equalSign, variable }
 	enum CharType { number, letter, arithmeticOp, syntaxChar, plusOrMinusSign, brace, whitespace }
 	class Tokenizer {

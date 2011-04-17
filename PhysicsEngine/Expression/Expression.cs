@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Compiler;
+using PhysicsEngine;
 using UserInterface;
+
 
 namespace PhysicsEngine.Expression {
 	class Expression {
@@ -11,11 +12,12 @@ namespace PhysicsEngine.Expression {
 		public Expression(string input) {
 			tokens = new Tokenizer(input).Scan()	.AddToLog(LogType.allTokens);
 			new PostfixedTokens(tokens.tokens)		.AddToLog(LogType.postFixedTokens)
-									.Evaluate()		.AddToLog(LogType.output);
+									.BuildParseTree().AddToLog(LogType.parseTree);
 
 			UI.DisplayLog(LogType.allTokens);
 			UI.DisplayLog(LogType.postFixedTokens);
 			UI.DisplayLog(LogType.output);
+			UI.DisplayLog(LogType.parseTree);
 		}
 		
 

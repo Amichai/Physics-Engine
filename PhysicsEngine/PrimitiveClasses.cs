@@ -10,9 +10,6 @@ namespace PhysicsEngine {
 	class Formula {
 
 	}
-	class Compiler {
-
-	}
 	class Wave {
 
 	}
