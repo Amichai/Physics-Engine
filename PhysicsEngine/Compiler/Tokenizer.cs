@@ -5,7 +5,7 @@ using System.Text;
 using UserInterface;
 
 namespace Compiler {
-	enum TokenType { number, function, charString, arithmeticOp, syntaxChar, empty, closedBrace, openBrace, equalSign }
+	enum TokenType { number, function, charString, arithmeticOp, syntaxChar, empty, closedBrace, openBrace, equalSign, variable }
 	enum CharType { number, letter, arithmeticOp, syntaxChar, plusOrMinusSign, brace, whitespace }
 	class Tokenizer {
 		public readonly static HashSet<char> syntaxChars = new HashSet<char>() { ',', '.', '{', '}' };
@@ -17,7 +17,7 @@ namespace Compiler {
 			compilerInput = input; 
 		}
 
-		AllTokens allTokens = new AllTokens();
+		Tokens allTokens = new Tokens();
 
 		private class currentChar {
 			public char val { get; set; }
@@ -126,7 +126,7 @@ namespace Compiler {
 		}
 
 		currentCharString tokenString = new currentCharString();
-		public AllTokens Scan() {
+		public Tokens Scan() {
 			for(int i = 0; i < compilerInput.Count(); i++){
 				char c = compilerInput[i];
 				Token tokenToAdd = tokenString.AddChar(new currentChar(c));

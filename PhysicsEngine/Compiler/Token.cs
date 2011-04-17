@@ -19,6 +19,9 @@ namespace Compiler {
 			if (TokenType == TokenType.charString) {
 				if (functionLibrary.Contains(TokenString)) {
 					TokenType = TokenType.function;
+				} else {
+					TokenType = TokenType.variable;
+					//Look up variable value in a dictionary
 				}
 			}
 		}

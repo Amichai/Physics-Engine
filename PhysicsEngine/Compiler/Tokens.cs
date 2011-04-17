@@ -4,25 +4,12 @@ using System.Linq;
 using System.Text;
 
 namespace Compiler {
-	class AllTokens {
-		List<Token> tokens = new List<Token>();
+	class Tokens{
+		public List<Token> tokens = new List<Token>();
 
-		public void Add(Token token) {
+		public virtual void Add(Token token) {
 			testForOperationInference(token);
 			tokens.Add(token);
-		}
-
-		public PostFixedTokens ConvertToPostfix() {
-			return new PostFixedTokens(tokens);
-		}
-		//TODO: Implement word functions like Add(1,2,3);
-
-		public string Visualize() {
-			string visualization = string.Empty;
-			foreach (Token token in tokens) {
-				visualization += token.TokenString + " ";
-			}
-			return visualization;
 		}
 
 		private void testForOperationInference(Token tokenToAdd) {
@@ -45,6 +32,14 @@ namespace Compiler {
 					tokens.Add(new Token("*", TokenType.arithmeticOp));
 				}
 			}
+		}
+
+		public string Visualize() {
+			string visualization = string.Empty;
+			foreach (Token token in tokens) {
+				visualization += token.TokenString + " ";
+			}
+			return visualization;
 		}
 	}
 }

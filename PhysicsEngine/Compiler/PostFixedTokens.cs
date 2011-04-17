@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace Compiler {
-	class PostFixedTokens {
+	class PostfixedTokens : Tokens{
 		private void handleOperator(Token token) {
 			//Test precedence
 			//If the current op has higher precedence, add to the stack
@@ -17,9 +17,9 @@ namespace Compiler {
 		}
 
 		Stack<Token> operatorStack = new Stack<Token>();
-		public PostFixedTokens(List<Token> inputTokens) {
+		public PostfixedTokens(List<Token> inputTokens) {
 			foreach (Token token in inputTokens) {
-				if (token.TokenType == TokenType.number) {
+				if (token.TokenType == TokenType.number || token.TokenType == TokenType.variable) {
 					tokens.Add(token);
 				}
 				if (token.TokenType == TokenType.function) {
@@ -70,7 +70,6 @@ namespace Compiler {
 		}
 
 		List<string> rightAssociative = new List<string>() { "^" };
-
 		private bool precedenceTest(string op1, string op2) {
 			int op1Value = getOperatorValue(op1);
 			int op2Value = getOperatorValue(op2);
@@ -87,25 +86,26 @@ namespace Compiler {
 			throw new Exception("Unhandled");
 		}
 
-		List<Token> tokens = new List<Token>();
-		string allTokenStrings = string.Empty;
-
-		public void Add(Token token) {
-			allTokenStrings += token.TokenType.ToString() + ": " + token.TokenString + " \n";
+		public override void Add(Token token) {
 			tokens.Add(token);
 		}
-
+		Node parseTree = new Node();
 		Stack<double> evalStack = new Stack<double>();
+		//Change this to build parse tree
 		public double Evaluate() {
+			//TODO: Currently we are evaluating. Instead of evaluating we can build a parse tree
 			foreach (Token token in tokens) {
 				if (token.TokenType == TokenType.number) {
 					evalStack.Push(token.TokenNumValue);
+					//parseTree.Push(token.TokenNumValue);
 				}
 				if (token.TokenType == TokenType.arithmeticOp) {
 					double val1, val2;
 					switch (token.TokenString) {
 						case "+":
 							evalStack.Push(evalStack.Pop() + evalStack.Pop());
+							//parseTree.Push(token.TokenNumValue);
+							//Get rid of the eval stack. Evaluate each node in the parse tree
 							break;
 						case "-":
 							evalStack.Push(-evalStack.Pop() + evalStack.Pop());
@@ -152,9 +152,18 @@ namespace Compiler {
 				throw new Exception("Parser evaluation error");
 			return evalStack.Pop();
 		}
+	}
 
-		public string Visualize() {
-			return allTokenStrings;
+	class Node {
+		List<Node> children = new List<Node>();
+		string name = string.Empty;
+
+		internal void Add() {
+			throw new NotImplementedException();
+		}
+
+		internal void Push() {
+			throw new NotImplementedException();
 		}
 	}
 }

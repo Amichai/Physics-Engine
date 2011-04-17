@@ -26,12 +26,12 @@ namespace UserInterface {
 			return obj;
 		}
 
-		public static AllTokens AddToLog(this AllTokens obj, LogType type) {
+		public static Tokens AddToLog(this Tokens obj, LogType type) {
 			objectLog.Add(new Tuple<object, LogType>(type.ToString().ToUpper() + ": " + obj.Visualize(), type));
 			return obj;
 		}
 
-		public static PostFixedTokens AddToLog(this PostFixedTokens obj, LogType type) {
+		public static PostfixedTokens AddToLog(this PostfixedTokens obj, LogType type) {
 			objectLog.Add(new Tuple<object, LogType>(type.ToString().ToUpper() + ": " + obj.Visualize(), type));
 			return obj;
 		}
@@ -42,13 +42,16 @@ namespace UserInterface {
 
 		public static void DisplayLog(LogType logType) {
 			foreach(Tuple<object, LogType> obj in objectLog){
+				StackTrace stackTrace = new StackTrace();
 				if(obj.Item2 == logType 
 					//Check that we've selected to display this part of the log (from within this class)
 					&& (!(obj.Item2 == LogType.token) || displayEachToken)
 					&& (!(obj.Item2 == LogType.input) || displayInput)
 					&& (!(obj.Item2 == LogType.output) || displayOutput)
-					&& (!(obj.Item2 == LogType.allTokens) || displayAllTokens))
+					&& (!(obj.Item2 == LogType.allTokens) || displayAllTokens)){
+					Debug.WriteLine("Called from: " + stackTrace.GetFrame(1).GetMethod().ToString());
 					Debug.Print(obj.Item1.ToString());
+				}
 			}
 		}
 	}

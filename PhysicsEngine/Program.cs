@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PhysicsEngine.Functions;
+using PhysicsEngine.Expression;
 using UserInterface;
 
 namespace PhysicsEngine {
     class Program {
         static void Main(string[] args) {
-			new Function("5(3+1)1");
-			UI.DisplayLog(LogType.allTokens);
+			new Expression.Expression("5(3+1)1");
         }
     }
 }
