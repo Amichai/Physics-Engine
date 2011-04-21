@@ -13,9 +13,6 @@ namespace PhysicsEngine {
 	class Wave {
 
 	}
-	class Manipulations {
-
-	}
 	class Vector {
 		private int dimensions = 2;
 		private List<double> coordinates;

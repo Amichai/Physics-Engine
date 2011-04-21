@@ -37,7 +37,7 @@ namespace UserInterface {
 			return obj;
 		}
 
-		public static Node AddToLog(this Node obj, LogType type) {
+		public static TreeNode AddToLog(this TreeNode obj, LogType type) {
 			objectLog.Add(new Tuple<object, LogType>(type.ToString().ToUpper() + ": " + obj.Visualize("", true), type));
 			return obj;
 		}

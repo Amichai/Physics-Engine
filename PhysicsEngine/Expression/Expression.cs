@@ -10,9 +10,9 @@ namespace PhysicsEngine.Expression {
 	class Expression {
 		Tokens tokens;
 		public Expression(string input) {
-			tokens = new Tokenizer(input).Scan()	.AddToLog(LogType.allTokens);
-			new PostfixedTokens(tokens.tokens)		.AddToLog(LogType.postFixedTokens)
-									.BuildParseTree().AddToLog(LogType.parseTree);
+			tokens = new Tokenizer(input).Scan()		.AddToLog(LogType.allTokens);
+			new PostfixedTokens(tokens.tokens)			.AddToLog(LogType.postFixedTokens)
+									.BuildParseTree()	.AddToLog(LogType.parseTree);
 
 			UI.DisplayLog(LogType.allTokens);
 			UI.DisplayLog(LogType.postFixedTokens);

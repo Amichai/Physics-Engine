@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compiler\ParseTree.cs" />
+    <Compile Include="Compiler\ParseTreeNode.cs" />
     <Compile Include="Compiler\Tokens.cs" />
     <Compile Include="Compiler\PostFixedTokens.cs" />
     <Compile Include="Compiler\Token.cs" />
@@ -51,7 +52,7 @@
     <Compile Include="DataStructures\Matrix.cs" />
     <Compile Include="DataStructures\Vector.cs" />
     <Compile Include="DataStructures\Wave.cs" />
-    <Compile Include="Expression\Equation.cs" />
+    <Compile Include="Expression\Derivation.cs" />
     <Compile Include="Expression\Expression.cs" />
     <Compile Include="PrimitiveClasses.cs" />
     <Compile Include="Program.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="SystemLibraries\DerivationLibrary.cs" />
     <Compile Include="SystemLibraries\Variables.cs" />
     <Compile Include="UserInterface.cs" />
+    <Compile Include="Value.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Matter\" />
