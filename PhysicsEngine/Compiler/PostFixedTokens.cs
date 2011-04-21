@@ -90,17 +90,17 @@ namespace PhysicsEngine {
 			tokens.Add(token);
 		}
 		
-		public Node BuildParseTree() {
-			Node parseTree = new Node();
+		public TreeNode BuildParseTree() {
+			TreeNode rootNode = new TreeNode();
 			foreach (Token token in tokens) {
 				if (token.TokenType == TokenType.number) {
-					parseTree.Push(token.TokenNumValue);
+					rootNode.Push(token.TokenNumValue);
 				}
 				if (token.TokenType == TokenType.arithmeticOp) {
-					parseTree.Push(token.TokenString);
+					rootNode.Push(token.TokenString);
 				}
 			}
-			return parseTree.children.First();
+			return rootNode.children.First();
 		}
 	}
 }
