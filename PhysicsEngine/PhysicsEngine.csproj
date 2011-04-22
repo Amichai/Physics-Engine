@@ -44,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compiler\ParseTree.cs" />
-    <Compile Include="Compiler\ParseTreeNode.cs" />
     <Compile Include="Compiler\Tokens.cs" />
     <Compile Include="Compiler\PostFixedTokens.cs" />
     <Compile Include="Compiler\Token.cs" />
@@ -63,9 +62,7 @@
     <Compile Include="UserInterface.cs" />
     <Compile Include="Value.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Matter\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -8,7 +8,7 @@ using UserInterface;
 namespace PhysicsEngine {
     class Program {
         static void Main(string[] args) {
-			new Expression.Expression("5(3+1)1");
+			new Expression.Expression("5+4+1+4+3*3");
         }
     }
 }

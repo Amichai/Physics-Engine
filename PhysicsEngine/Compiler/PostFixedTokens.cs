@@ -91,16 +91,21 @@ namespace PhysicsEngine {
 		}
 		
 		public TreeNode BuildParseTree() {
-			TreeNode rootNode = new TreeNode();
+			TreeNode parseTree = new TreeNode();
 			foreach (Token token in tokens) {
-				if (token.TokenType == TokenType.number) {
-					rootNode.Push(token.TokenNumValue);
-				}
-				if (token.TokenType == TokenType.arithmeticOp) {
-					rootNode.Push(token.TokenString);
+				switch (token.TokenType) {
+					case TokenType.number:
+						parseTree.AppendNumber(token.TokenNumValue);
+						break;
+					case TokenType.arithmeticOp:
+						parseTree.AppendOperator(token.TokenString);
+						break;
+					default:
+						throw new Exception("This token type cannot be appended to the parse tree");
 				}
 			}
-			return rootNode.children.First();
+			//The root node is always redundant by construction
+			return parseTree.children.First();
 		}
 	}
 }
