@@ -11,7 +11,7 @@ namespace PhysicsEngine.Numbers {
 		private numberType primaryNumType { get; set; }
 
 		/// <summary>Decimal value</summary>
-		public Value(double val, Restrictions restrictions) {
+		public void InitDouble(double val, Restrictions restrictions) {
 			this.deciValue = val;
 			if (val == Math.Floor(val)) {
 				//this is done to avoid the accumulation of miniscule errors:
@@ -20,32 +20,39 @@ namespace PhysicsEngine.Numbers {
 				if (restrictions != Restrictions.dontFactorMe && restrictions != Restrictions.dontFactorDontSetFraction) {
 					factors = new Factors((int)deciValue);
 				}
-			}
-			this.primaryNumType = numberType.deci;
-			if (restrictions != Restrictions.dontSetToFraction && restrictions != Restrictions.dontFactorDontSetFraction) {
+			}else if (restrictions != Restrictions.dontSetToFraction && restrictions != Restrictions.dontFactorDontSetFraction) {
 				asAFraction = decimalToFraction(deciValue);
 			}			
+			this.primaryNumType = numberType.deci;
 		}
 		Factors factors;
 
 		//TODO: Imaginary numbers
 
 		/// <summary>Fraction</summary>
-		public Value(int numerator, int denominator) {
-			this.numerator = new Value(numerator, Restrictions.dontSetToFraction);
-			this.denominator = new Value(denominator, Restrictions.dontSetToFraction);
+		public void InitFraction(int numerator, int denominator) {
+			Value value = new Value();
+			value.InitDouble(numerator, Restrictions.dontSetToFraction);
+			this.numerator = value;
+			value = new Value();
+			value.InitDouble(denominator, Restrictions.dontSetToFraction);
+			this.denominator = value;
 			this.deciValue = ((double)numerator / denominator);
 			this.primaryNumType = numberType.fractional;
 		}
 
 		/// <summary>Exponent</summary>
-		public Value(double expBase, double expPower, Restrictions restrictionsToPass) {
-			this.ExpBase = new Value(expBase, restrictionsToPass);
-			this.ExpPower = new Value(expPower, restrictionsToPass);
+		public void InitExp(double expBase, double expPower, Restrictions restrictionsToPass) {
+			Value value = new Value();
+			value.InitDouble(expBase, restrictionsToPass);
+			this.ExpBase = value;
+			value = new Value();
+			value.InitDouble(expPower, restrictionsToPass);
+			this.ExpPower = value;
 			this.deciValue = (Math.Pow(expBase, expPower));
 			primaryNumType = numberType.exponent;
 		}
-
+		
 		public double deciValue = double.MinValue;
 
 		public Value asAFraction { get; set; }
@@ -97,9 +104,12 @@ namespace PhysicsEngine.Numbers {
 				decimalSign = -1;
 			} else decimalSign = 1;
 			Decimal = Math.Abs(Decimal);
+			Value value = new Value();
 			if (Decimal == Math.Floor(Decimal)) {
 				fractionNumerator = (int)Decimal * decimalSign;
 				fractionDenominator = 1;
+				value.InitFraction(fractionNumerator, fractionDenominator);
+				return value; //Pass a restriction to not factorize (since its been done already)
 			}
 			Z = Decimal;
 			previousDenominator = 0;
@@ -111,8 +121,9 @@ namespace PhysicsEngine.Numbers {
 				fractionNumerator= (int)Math.Floor(Decimal*fractionDenominator + .5);
 			} 
 			fractionNumerator  = decimalSign * fractionNumerator;
-			
-			return new Value(fractionNumerator, fractionDenominator);
+			value = new Value();
+			value.InitFraction(fractionNumerator, fractionDenominator);
+			return value;
 		}
 	}
 }

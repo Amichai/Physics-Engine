@@ -13,7 +13,7 @@ namespace PhysicsEngine.Numbers {
 		private int consecutiveFactorCounter = 0; 
 		public Factors(int factorMe) {
 			//Run a sanity test to make sure this won't take forever
-			//Run this on a seperate thread
+			Value value = new Value();
 			origionalNumber = factorMe;
 			for (int i = 2; i < factorMe + 1; i++) {
 				while (factorMe % i == 0) {
@@ -21,14 +21,18 @@ namespace PhysicsEngine.Numbers {
 					if (i == lastFactor || i == 2)
 						consecutiveFactorCounter++;
 					else {
-						FactorsAsExponents.Add(new Value((double)lastFactor, (double)consecutiveFactorCounter, Restrictions.dontFactorDontSetFraction));
+						value = new Value();
+						value.InitExp((double)lastFactor, (double)consecutiveFactorCounter, Restrictions.dontFactorDontSetFraction);
+						FactorsAsExponents.Add(value);
 						consecutiveFactorCounter = 0; 
 					}
 					lastFactor = i;
 					factorMe /= i;
 				}
 			}
-			FactorsAsExponents.Add(new Value((double)lastFactor, (double)consecutiveFactorCounter + 1, Restrictions.dontFactorDontSetFraction));
+			value = new Value();
+			value.InitExp((double)lastFactor, (double)consecutiveFactorCounter + 1, Restrictions.dontFactorDontSetFraction);
+			FactorsAsExponents.Add(value);
 			Count = factors.Count();
 		}
 
