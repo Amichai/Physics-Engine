@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using PhysicsEngine.Expression;
 using UserInterface;
+using System.Diagnostics;
 
 namespace PhysicsEngine {
     class Program {
         static void Main(string[] args) {
-			new Expression.Expression("5+4+1+4+3*3*4");
+			//new Expression.Expression("5+4+1+4+3*3*4");
+
+			Debug.Print(new Value(56).FullVisualization());
         }
     }
 }

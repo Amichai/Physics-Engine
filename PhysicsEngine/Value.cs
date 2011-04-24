@@ -2,16 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
 namespace PhysicsEngine {
 	class Value {
 		private enum numberType { integer, deci, fractional, imaginary, exponent }
 		private numberType primaryNumType { get; set; }
+		
 		/// <summary>Decimal value</summary>
 		public Value(double val) {
 			setDecimalValue(val);
-			this.primaryNumType = numberType.deci;
+			asAFraction = decimalToFraction(deciValue);
 		}
+
+		/// <summary>Decimal value</summary>
+		private Value(double val, bool setToFraction) {
+			setDecimalValue(val);
+			if (setToFraction) {
+				asAFraction = decimalToFraction(deciValue);
+			}
+		}
+		private List<int> factors = new List<int>();
 
 		private void setDecimalValue(double val) {
 			this.deciValue = val;
@@ -19,30 +30,26 @@ namespace PhysicsEngine {
 				//this is done to avoid the accumulation of miniscule errors:
 				deciValue = Math.Floor(val);
 				primaryNumType = numberType.integer;
-				Factorize((int)deciValue);
+				factors = Factorize((int)deciValue);
 			}
+			this.primaryNumType = numberType.deci;
 		}
 
-		/// <summary>Imaginary number</summary>
-		public Value(double realPart, double imaginaryPart) {
-			this.realPart = new Value(realPart);
-			this.imaginaryPart = new Value(imaginaryPart);
-			setDecimalValue(realPart);
-			this.primaryNumType = numberType.imaginary;
-		}
+		//TODO: Imaginary numbers
 		
 		/// <summary>Fraction</summary>
-		public Value(double numerator, double denominator) {
-			this.numerator = new Value(numerator);
-			this.denominator = new Value(denominator);
-			setDecimalValue(numerator / denominator);
+		public Value(int numerator, int denominator) {
+			this.numerator = new Value(numerator, false);
+			this.denominator = new Value(denominator, false);
+			this.deciValue = ((double)numerator / denominator);
 			this.primaryNumType = numberType.fractional;
 		}
 
+		/// <summary>Exponent</summary>
 		public Value(double expBase, double expPower) {
 			this.ExpBase = new Value(expBase);
 			this.ExpPower = new Value(expPower);
-			setDecimalValue(Math.Pow(expBase, expPower));
+			this.deciValue = (Math.Pow(expBase, expPower));
 			primaryNumType = numberType.exponent;
 		}
 
@@ -62,6 +69,7 @@ namespace PhysicsEngine {
 		}
 		public double deciValue = double.MinValue;
 
+		public Value asAFraction { get; set; }
 		public Value realPart { get; set; }
 		public Value imaginaryPart { get; set; }
 		public Value numerator{ get; set; }
@@ -80,6 +88,56 @@ namespace PhysicsEngine {
 				return ExpBase.GetValueToString() + "^" + ExpPower.GetValueToString();
 			}
 			throw new Exception("Unkonwn number type");
+		}
+
+		public string FullVisualization() {
+			string output = string.Empty;
+			output += "Number: " + GetValueToString() + "\n";
+			if(factors.Count > 0)
+				output += "Factors: ";
+			foreach (int i in factors) {
+				output += i.ToString() + " ";
+			}
+			output += "\n";
+			if (asAFraction != null) {
+				output += "As a fraction: " + asAFraction.GetValueToString();
+				output += "\nFraction evaluation: " + asAFraction.deciValue.ToString();
+				output += "\nNumerator: "+ asAFraction.numerator.FullVisualization();
+				output += "Denomenator: " + asAFraction.denominator.FullVisualization();
+			}
+			return output;
+		}
+
+		private enum Sign { positive, negative };
+		private Value decimalToFraction(double Decimal) {
+			int fractionNumerator = int.MaxValue;
+			int fractionDenominator = 1;
+			double accuracyFactor = .0000001;
+			int decimalSign;
+			double Z;
+			int previousDenominator;
+			int scratchValue;
+
+			if (Decimal < 0) {
+				decimalSign = -1;
+			} else decimalSign = 1;
+			Decimal = Math.Abs(Decimal);
+			if (Decimal == Math.Floor(Decimal)) {
+				fractionNumerator = (int)Decimal * decimalSign;
+				fractionDenominator = 1;
+			}
+			Z = Decimal;
+			previousDenominator = 0;
+			while (!(Z == Math.Floor(Z)) && (Math.Abs((Decimal - ((double)fractionNumerator / fractionDenominator))) > accuracyFactor )) {
+				Z = 1/(Z - (int)Z);
+				scratchValue = fractionDenominator;
+				fractionDenominator = fractionDenominator*(int)Z + previousDenominator;
+				previousDenominator = scratchValue;
+				fractionNumerator= (int)Math.Floor(Decimal*fractionDenominator + .5);
+			} 
+			fractionNumerator  = decimalSign * fractionNumerator;
+			
+			return new Value(fractionNumerator, fractionDenominator);
 		}
 	}
 }
