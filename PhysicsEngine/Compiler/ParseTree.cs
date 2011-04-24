@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PhysicsEngine.Numbers;
 
 namespace PhysicsEngine.Compiler {
 	abstract class ParseTree {
@@ -38,7 +39,7 @@ namespace PhysicsEngine.Compiler {
 		internal void AppendNumber(double tokenVal) {
 			TreeNode child = new TreeNode();
 			child.type = nodeType.number;
-			child.val = new Value(tokenVal);
+			child.val = new Value(tokenVal, Restrictions.none);
 			child.name = tokenVal.ToString();
 			child.numericalEvaluation = true;
 			children.Insert(0, child);
@@ -66,7 +67,7 @@ namespace PhysicsEngine.Compiler {
 				child.val = 
 					new Value(postFixedOperatorEvaluator(
 							childLeafNodes.Select(i=>i.val.deciValue).ToList(), 
-							tokenString));
+							tokenString), Restrictions.none);
 			}
 			flattenTieredAddOrMult(child);
 			children.Insert(0, child);
@@ -80,22 +81,36 @@ namespace PhysicsEngine.Compiler {
 			TreeNode adjustedNode = new TreeNode();
 			switch (node.name) {
 				case "+":
-					break;
-				case "*":
-					break;
-			}
-			for(int i=0; i < node.children.Count(); i++){
-				if ((node.children[i].name == "+" && node.name == "+") 
-					|| (node.children[i].name == "*" && node.name == "*")) {
-					adjustedNode = node.children[i];
-					node.children.RemoveAt(i);
-					foreach (TreeNode t in adjustedNode.children) {
-						node.children.Add(t);
+				for (int i = 0; i < node.children.Count(); i++) {
+					if (node.children[i].name == "+") {
+						adjustedNode = node.children[i];
+						node.children.RemoveAt(i);
+						foreach (TreeNode t in adjustedNode.children) {
+							node.children.Add(t);
+						}
 					}
 				}
+				break;
+				case "*":
+				List<int> commonFactors = new List<int>();
+				for(int i=0; i < node.children.Count(); i++){
+					if (node.children[i].name == "*") {
+						adjustedNode = node.children[i];
+						node.children.RemoveAt(i);
+						foreach (TreeNode t in adjustedNode.children) {
+							node.children.Add(t);
+						}
+					}
+					if (node.children[i].numericalEvaluation) {
+						//TODO: take out the common factors from val.factors
+						//Make it work by using exponents
+					}
+				}
+				break;
 			}
 		}
 
+		//TODO: This should be from the Value class not doubles
 		double postFixedOperatorEvaluator(List<double> values, string tokenString) {
 			//TODO: Solve these problems in cases that cannot be evaluated numerically.
 			//Possibly extend the Value type for non-numerical evaluation.
@@ -131,7 +146,7 @@ namespace PhysicsEngine.Compiler {
 		}
 	}
 		
-	//ParseTreeManipulationMethods
+	//TODO: ParseTreeManipulationMethods
 	//Flatten out teired addition -
 	//Find common factors over an addition problem
 	//Distribute multiplication over addition

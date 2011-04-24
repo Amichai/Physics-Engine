@@ -53,6 +53,8 @@
     <Compile Include="DataStructures\Wave.cs" />
     <Compile Include="Expression\Derivation.cs" />
     <Compile Include="Expression\Expression.cs" />
+    <Compile Include="Numbers\BigInt.cs" />
+    <Compile Include="Numbers\Factors.cs" />
     <Compile Include="PrimitiveClasses.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -60,7 +62,7 @@
     <Compile Include="SystemLibraries\DerivationLibrary.cs" />
     <Compile Include="SystemLibraries\Variables.cs" />
     <Compile Include="UserInterface.cs" />
-    <Compile Include="Value.cs" />
+    <Compile Include="Numbers\Value.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
