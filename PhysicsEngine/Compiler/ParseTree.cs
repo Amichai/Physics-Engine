@@ -48,7 +48,6 @@ namespace PhysicsEngine.Compiler {
 		/// Take each token string from the list of postfixedtokens and build a parse tree
 		/// with each node evaluated when possible. 
 		/// </summary>
-		/// <param name="tokenString"></param>
 		internal void AppendOperator(string tokenString) {
 			//Will always take an operation and append two numbers as children
 			//This is necessitated by the postfixed token construction
@@ -69,18 +68,25 @@ namespace PhysicsEngine.Compiler {
 							childLeafNodes.Select(i=>i.val.deciValue).ToList(), 
 							tokenString));
 			}
-			flattenTeiredAddOrMult(child);
+			flattenTieredAddOrMult(child);
 			children.Insert(0, child);
 		}
 
 		/// <summary>
 		/// For commutative operations its possible to have one operation node with many children
-		/// instead of teired iterations of the operation. This method is to change from the 
+		/// instead of tiered iterations of the operation. This method is to change from the 
 		/// latter to the former.</summary>
-		private void flattenTeiredAddOrMult(TreeNode node) {
+		private void flattenTieredAddOrMult(TreeNode node) {
 			TreeNode adjustedNode = new TreeNode();
+			switch (node.name) {
+				case "+":
+					break;
+				case "*":
+					break;
+			}
 			for(int i=0; i < node.children.Count(); i++){
-				if ((node.children[i].name == "+" && node.name == "+") || (node.children[i].name == "*" && node.name == "*")) {
+				if ((node.children[i].name == "+" && node.name == "+") 
+					|| (node.children[i].name == "*" && node.name == "*")) {
 					adjustedNode = node.children[i];
 					node.children.RemoveAt(i);
 					foreach (TreeNode t in adjustedNode.children) {
@@ -123,23 +129,10 @@ namespace PhysicsEngine.Compiler {
 				throw new Exception("No evaluation happened");
 			return returnVal;
 		}
-
-		#region ParseTree manipulation methods
-		internal void FlattenTeiredAddition() {
-			//if the child of a + is ever a plus:
-			//eliminate the second plus, and append to children to the first +
-			for (int i = 0; i < children.Count(); i++) {
-				if (name == "+" && children.First().name == "+") {
-					
-				}
-				if (name == "+" && children.Last().name == "+") { }
-			}
-		}
-		#endregion
 	}
 		
 	//ParseTreeManipulationMethods
-	//Flatten out teired addition
+	//Flatten out teired addition -
 	//Find common factors over an addition problem
 	//Distribute multiplication over addition
 	//Addition and multiplication can be rearranged (commutative)
