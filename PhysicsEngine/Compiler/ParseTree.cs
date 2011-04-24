@@ -39,9 +39,7 @@ namespace PhysicsEngine.Compiler {
 		internal void AppendNumber(double tokenVal) {
 			TreeNode child = new TreeNode();
 			child.type = nodeType.number;
-			Value value = new Value();
-			value.InitDouble(tokenVal, Restrictions.none);
-			child.val = value;
+			child.val = new Value(tokenVal, Restrictions.none);
 			child.name = tokenVal.ToString();
 			child.numericalEvaluation = true;
 			children.Insert(0, child);
@@ -66,11 +64,9 @@ namespace PhysicsEngine.Compiler {
 			}
 			if (childLeafNodes.All(i => i.numericalEvaluation)) {
 				child.numericalEvaluation = true;
-				Value value = new Value();
-				value.InitDouble(postFixedOperatorEvaluator(
+				child.val = new Value(postFixedOperatorEvaluator(
 							childLeafNodes.Select(i => i.val.deciValue).ToList(),
 							tokenString), Restrictions.none);
-				child.val = value;
 			}
 			flattenTieredAddOrMult(child);
 			children.Insert(0, child);

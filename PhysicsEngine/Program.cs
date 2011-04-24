@@ -11,9 +11,7 @@ namespace PhysicsEngine {
     class Program {
         static void Main(string[] args) {
 			new Expression.Expression("10*20*10");
-			Value value =new Value();
-			value.InitDouble(20, Restrictions.none);
-			Debug.Print(value.FullVisualization());
+			Debug.Print(new Value(20, Restrictions.none).FullVisualization());
         }
     }
 }

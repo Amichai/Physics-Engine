@@ -6,9 +6,34 @@ using System.Diagnostics;
 
 namespace PhysicsEngine.Numbers {
 	public enum Restrictions { dontFactorMe, dontSetToFraction, dontFactorDontSetFraction, none };
+	public enum NumberType { integer, deci, fractional, imaginary, exponent };
 	class Value {
-		private enum numberType { integer, deci, fractional, imaginary, exponent };
-		private numberType primaryNumType { get; set; }
+		public Value(double doubleVal, Restrictions restrictions) {
+				InitDouble(doubleVal, restrictions);
+		}
+		public Value(double realPart, double imaginaryPart, NumberType type) {
+			switch (type) {
+				case NumberType.imaginary:
+					InitComplexNum(realPart, imaginaryPart);
+					break;
+			}
+		}
+		public Value(double baseVal, double exponent, NumberType type, Restrictions restrictions) {
+			switch (type) {
+				case NumberType.exponent:
+					InitExp(baseVal, exponent, restrictions);
+					break;
+			}
+		}
+		public Value(int numerator, int denomenator, NumberType type) {
+			switch (type) {
+				case NumberType.fractional:
+					InitFraction(numerator, denomenator);
+					break;
+			}
+		}
+
+		private NumberType primaryNumType { get; set; }
 
 		/// <summary>Decimal value</summary>
 		public void InitDouble(double val, Restrictions restrictions) {
@@ -16,41 +41,40 @@ namespace PhysicsEngine.Numbers {
 			if (val == Math.Floor(val)) {
 				//this is done to avoid the accumulation of miniscule errors:
 				deciValue = Math.Floor(val);
-				primaryNumType = numberType.integer;
+				primaryNumType = NumberType.integer;
 				if (restrictions != Restrictions.dontFactorMe && restrictions != Restrictions.dontFactorDontSetFraction) {
 					factors = new Factors((int)deciValue);
 				}
 			}else if (restrictions != Restrictions.dontSetToFraction && restrictions != Restrictions.dontFactorDontSetFraction) {
 				asAFraction = decimalToFraction(deciValue);
 			}			
-			this.primaryNumType = numberType.deci;
+			this.primaryNumType = NumberType.deci;
 		}
 		Factors factors;
 
 		//TODO: Imaginary numbers
+		/// <summary>Complex Numbers</summary>
+		public void InitComplexNum(double realPart, double imaginaryPart) {
+			this.realPart = new Value(realPart, Restrictions.none);
+			this.imaginaryPart = new Value(imaginaryPart, Restrictions.none);
+			this.deciValue = realPart;
+			this.primaryNumType = NumberType.imaginary;
+		}
 
 		/// <summary>Fraction</summary>
 		public void InitFraction(int numerator, int denominator) {
-			Value value = new Value();
-			value.InitDouble(numerator, Restrictions.dontSetToFraction);
-			this.numerator = value;
-			value = new Value();
-			value.InitDouble(denominator, Restrictions.dontSetToFraction);
-			this.denominator = value;
+			this.numerator = new Value(numerator, Restrictions.dontSetToFraction);
+			this.denominator = new Value(denominator, Restrictions.dontSetToFraction);
 			this.deciValue = ((double)numerator / denominator);
-			this.primaryNumType = numberType.fractional;
+			this.primaryNumType = NumberType.fractional;
 		}
 
 		/// <summary>Exponent</summary>
 		public void InitExp(double expBase, double expPower, Restrictions restrictionsToPass) {
-			Value value = new Value();
-			value.InitDouble(expBase, restrictionsToPass);
-			this.ExpBase = value;
-			value = new Value();
-			value.InitDouble(expPower, restrictionsToPass);
-			this.ExpPower = value;
+			this.ExpBase = new Value(expBase, restrictionsToPass);
+			this.ExpPower = new Value(expPower, restrictionsToPass);
 			this.deciValue = (Math.Pow(expBase, expPower));
-			primaryNumType = numberType.exponent;
+			primaryNumType = NumberType.exponent;
 		}
 		
 		public double deciValue = double.MinValue;
@@ -64,13 +88,13 @@ namespace PhysicsEngine.Numbers {
 		public Value ExpPower { get; set; }
 
 		public string GetValueToString() {
-			if (primaryNumType == numberType.deci || primaryNumType == numberType.integer) {
+			if (primaryNumType == NumberType.deci || primaryNumType == NumberType.integer) {
 				return deciValue.ToString();
-			} else if (primaryNumType == numberType.fractional) {
+			} else if (primaryNumType == NumberType.fractional) {
 				return numerator.GetValueToString() + "/" + denominator.GetValueToString();
-			} else if (primaryNumType == numberType.imaginary) {
+			} else if (primaryNumType == NumberType.imaginary) {
 				return realPart.GetValueToString() + " " + imaginaryPart.GetValueToString() + "i";
-			} else if (primaryNumType == numberType.exponent) {
+			} else if (primaryNumType == NumberType.exponent) {
 				return ExpBase.GetValueToString() + "^" + ExpPower.GetValueToString();
 			}
 			throw new Exception("Unkonwn number type");
@@ -104,12 +128,10 @@ namespace PhysicsEngine.Numbers {
 				decimalSign = -1;
 			} else decimalSign = 1;
 			Decimal = Math.Abs(Decimal);
-			Value value = new Value();
 			if (Decimal == Math.Floor(Decimal)) {
 				fractionNumerator = (int)Decimal * decimalSign;
 				fractionDenominator = 1;
-				value.InitFraction(fractionNumerator, fractionDenominator);
-				return value; //Pass a restriction to not factorize (since its been done already)
+				return new Value(fractionDenominator, fractionNumerator, NumberType.fractional);
 			}
 			Z = Decimal;
 			previousDenominator = 0;
@@ -121,9 +143,7 @@ namespace PhysicsEngine.Numbers {
 				fractionNumerator= (int)Math.Floor(Decimal*fractionDenominator + .5);
 			} 
 			fractionNumerator  = decimalSign * fractionNumerator;
-			value = new Value();
-			value.InitFraction(fractionNumerator, fractionDenominator);
-			return value;
+			return new Value(fractionNumerator, fractionDenominator, NumberType.fractional);
 		}
 	}
 }
