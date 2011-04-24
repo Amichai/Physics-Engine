@@ -13,6 +13,7 @@ namespace PhysicsEngine.Compiler {
 		public Value val;
 		public nodeType type;
 		private static string output = "\n";
+
 		public string Visualize(string indent, bool last) {
 			output += indent;
 			if (last) {
@@ -68,7 +69,25 @@ namespace PhysicsEngine.Compiler {
 							childLeafNodes.Select(i=>i.val.deciValue).ToList(), 
 							tokenString));
 			}
+			flattenTeiredAddOrMult(child);
 			children.Insert(0, child);
+		}
+
+		/// <summary>
+		/// For commutative operations its possible to have one operation node with many children
+		/// instead of teired iterations of the operation. This method is to change from the 
+		/// latter to the former.</summary>
+		private void flattenTeiredAddOrMult(TreeNode node) {
+			TreeNode adjustedNode = new TreeNode();
+			for(int i=0; i < node.children.Count(); i++){
+				if ((node.children[i].name == "+" && node.name == "+") || (node.children[i].name == "*" && node.name == "*")) {
+					adjustedNode = node.children[i];
+					node.children.RemoveAt(i);
+					foreach (TreeNode t in adjustedNode.children) {
+						node.children.Add(t);
+					}
+				}
+			}
 		}
 
 		double postFixedOperatorEvaluator(List<double> values, string tokenString) {
