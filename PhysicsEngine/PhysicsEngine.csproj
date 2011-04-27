@@ -34,8 +34,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,6 +58,9 @@
     <Compile Include="DataStructures\Wave.cs" />
     <Compile Include="Expression\Derivation.cs" />
     <Compile Include="Expression\Expression.cs" />
+    <Compile Include="TextEditor\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Numbers\BigInt.cs" />
     <Compile Include="Numbers\Factors.cs" />
     <Compile Include="PrimitiveClasses.cs" />
@@ -61,10 +69,17 @@
     <Compile Include="SystemLibraries\Constants.cs" />
     <Compile Include="SystemLibraries\DerivationLibrary.cs" />
     <Compile Include="SystemLibraries\Variables.cs" />
+    <Compile Include="TextEditor\TextEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UserInterface.cs" />
     <Compile Include="Numbers\Value.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="TextEditor\TextEditor.resx">
+      <DependentUpon>TextEditor.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

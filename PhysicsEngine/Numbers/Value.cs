@@ -11,6 +11,11 @@ namespace PhysicsEngine.Numbers {
 		public Value(double doubleVal, Restrictions restrictions) {
 				InitDouble(doubleVal, restrictions);
 		}
+
+		public Value(double doubleVal, Factors factors, Restrictions restrictions) {
+			InitDouble(doubleVal, restrictions);
+		}
+
 		public Value(double realPart, double imaginaryPart, NumberType type) {
 			switch (type) {
 				case NumberType.imaginary:
@@ -50,7 +55,7 @@ namespace PhysicsEngine.Numbers {
 			}			
 			this.primaryNumType = NumberType.deci;
 		}
-		Factors factors;
+		public Factors factors;
 
 		//TODO: Imaginary numbers
 		/// <summary>Complex Numbers</summary>

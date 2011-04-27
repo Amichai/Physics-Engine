@@ -64,9 +64,11 @@ namespace PhysicsEngine.Compiler {
 			}
 			if (childLeafNodes.All(i => i.numericalEvaluation)) {
 				child.numericalEvaluation = true;
-				child.val = new Value(postFixedOperatorEvaluator(
-							childLeafNodes.Select(i => i.val.deciValue).ToList(),
-							tokenString), Restrictions.none);
+				child.val = new Value(
+							postFixedOperatorEvaluator(childLeafNodes.Select(i => i.val.deciValue).ToList(),
+																tokenString),
+							new Factors(childLeafNodes.Select(i => i.val.factors).ToList()),
+							Restrictions.none);
 			}
 			flattenTieredAddOrMult(child);
 			children.Insert(0, child);
@@ -100,14 +102,19 @@ namespace PhysicsEngine.Compiler {
 							node.children.Add(t);
 						}
 					}
-					if (node.children[i].numericalEvaluation) {
+				}
+				if (this.numericalEvaluation) {
+					
+					//this means that all the children are numbers and we have evaluated
 						//TODO: take out the common factors from val.factors
 						//Make it work by using exponents
-					}
 				}
 				break;
 			}
 		}
+
+		//TODO: Division
+		//TODO: when multiplying two numbers, don't recalculate prime factors, but combine the two lists of factors
 
 		//TODO: This should be from the Value class not doubles
 		double postFixedOperatorEvaluator(List<double> values, string tokenString) {
