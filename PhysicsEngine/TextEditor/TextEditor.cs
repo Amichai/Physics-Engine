@@ -1,5 +1,4 @@
-﻿#region USING
-using System;
+﻿using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
@@ -8,7 +7,8 @@ using System.Windows.Forms;
 using Microsoft.Office.Interop.Word;
 
 using System.Reflection;
-#endregion
+using System.Diagnostics;
+using PhysicsEngine.Expression;
 
 namespace Best.Editor {
 	public class TextEditor : System.Windows.Forms.UserControl {
@@ -539,6 +539,7 @@ namespace Best.Editor {
 		}
 		private void richTextBox1_TextChanged(object sender, System.EventArgs e) {
 			updateNumberLabel();
+			
 			//updateCount();
 		}
 		private void richTextBox1_FontChanged(object sender, System.EventArgs e) {
@@ -599,6 +600,22 @@ namespace Best.Editor {
 				}
 			} else if (e.KeyChar == (char)9) {
 				richTextBox1.SelectionStart = richTextBox1.SelectionStart + 5;
+			} else if (e.KeyChar == 13) {
+				int lastLine = richTextBox1.GetLineFromCharIndex(richTextBox1.SelectionStart) -1;
+				Debug.Print(richTextBox1.Lines[lastLine]);
+				string expressionString = richTextBox1.Lines[lastLine];
+				if (expressionString.EndsWith(";")) {
+					expressionString = expressionString.Remove(expressionString.Length - 1);
+					Expression exp = new Expression(expressionString);
+					richTextBox1.Text += exp.Output + "\n";
+					richTextBox1.Text += exp.ParseTree.Visualize("", true) + "\n";
+					richTextBox1.SelectionStart = richTextBox1.Text.Length;
+					richTextBox1.Focus();
+				}
+
+				//Move cursor to the end
+				//Don't run the method, if I just want a new line
+
 			}
 		}
 		private void richTextBox1_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e) {

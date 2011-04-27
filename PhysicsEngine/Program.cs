@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using PhysicsEngine.Expression;
-using UserInterface;
 using System.Diagnostics;
 using PhysicsEngine.Numbers;
 

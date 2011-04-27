@@ -113,7 +113,7 @@ namespace PhysicsEngine.Numbers {
 			output += "\n";
 			if (asAFraction != null) {
 				output += "As a fraction: " + asAFraction.GetValueToString();
-				output += "\nFraction evaluation: " + asAFraction.deciValue.ToString();
+				output += " = " + asAFraction.deciValue.ToString();
 				output += "\nNumerator: "+ asAFraction.numerator.FullVisualization();
 				output += "Denomenator: " + asAFraction.denominator.FullVisualization();
 			}

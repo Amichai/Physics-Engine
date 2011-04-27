@@ -47,6 +47,7 @@ namespace PhysicsEngine.Numbers {
 							output += " ";
 					}
 				}
+				if(this.InAList.Count > 0)
 				output += ")";
 				return output;
 			}

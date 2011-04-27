@@ -13,7 +13,7 @@ namespace PhysicsEngine.Compiler {
 		//public double val = int.MinValue;
 		public Value val;
 		public nodeType type;
-		private static string output = "\n";
+		internal static string output = "\n";
 
 		public string Visualize(string indent, bool last) {
 			output += indent;
@@ -43,6 +43,7 @@ namespace PhysicsEngine.Compiler {
 			child.name = tokenVal.ToString();
 			child.numericalEvaluation = true;
 			children.Insert(0, child);
+			output = string.Empty;
 		}
 
 		/// <summary>

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UserInterface;
 
 namespace PhysicsEngine {
 	enum TokenType { number, function, charString, arithmeticOp, syntaxChar, empty, closedBrace, openBrace, equalSign, variable }
@@ -132,13 +131,11 @@ namespace PhysicsEngine {
 				Token tokenToAdd = tokenString.AddChar(new currentChar(c));
 				if (tokenToAdd != null) {
 					allTokens.Add(tokenToAdd);
-					UI.AddToLog(tokenToAdd.TokenString + " " + tokenToAdd.TokenType.ToString(), LogType.token);
 				}
 			}
 			//This publishes any content left over at the end of token creation
 			if (tokenString.tokenString.Count() > 0)
 				allTokens.Add(tokenString.Flush());
-			UI.DisplayLog(LogType.token);
 			return allTokens;
 		}
 	}

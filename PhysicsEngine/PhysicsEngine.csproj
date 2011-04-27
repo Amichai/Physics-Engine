@@ -72,7 +72,6 @@
     <Compile Include="TextEditor\TextEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserInterface.cs" />
     <Compile Include="Numbers\Value.cs" />
   </ItemGroup>
   <ItemGroup>
