@@ -43,6 +43,7 @@ namespace PhysicsEngine.Compiler {
 			child.name = tokenVal.ToString();
 			child.numericalEvaluation = true;
 			children.Insert(0, child);
+			//clear the static visualization output string:
 			output = string.Empty;
 		}
 
@@ -150,6 +151,21 @@ namespace PhysicsEngine.Compiler {
 			if (returnVal == int.MinValue)
 				throw new Exception("No evaluation happened");
 			return returnVal;
+		}
+
+		internal void AppendVariable(string p) {
+			if (p == "ans") {
+				TreeNode child = new TreeNode();
+				child.type = nodeType.number;
+				double tokenVal = OutputLog.returnValues.Last().deciValue;
+				child.val = new Value(tokenVal, Restrictions.none);
+				child.name = tokenVal.ToString();
+				child.numericalEvaluation = true;
+				children.Insert(0, child);
+				//clear the static visualization output string:
+				output = string.Empty;
+			} else
+				throw new Exception("unknown variable");
 		}
 	}
 		

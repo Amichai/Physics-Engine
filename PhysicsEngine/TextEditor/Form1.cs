@@ -21,7 +21,9 @@ namespace Best.Main {
 			// Required for Windows Form Designer support
 			//
 			InitializeComponent();
-
+			this.Focus();
+			this.textEditor1.Focus();
+			this.textEditor1.richTextBox1.Focus();
 			//
 			// TODO: Add any constructor code after InitializeComponent call
 			//
@@ -72,7 +74,6 @@ namespace Best.Main {
 			this.Text = "Text Editor";
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.ResumeLayout(false);
-
 		}
 		#endregion
 
@@ -85,7 +86,7 @@ namespace Best.Main {
 		}
 
 		private void textEditor1_Load(object sender, EventArgs e) {
-
+			
 		}
 	}
 }

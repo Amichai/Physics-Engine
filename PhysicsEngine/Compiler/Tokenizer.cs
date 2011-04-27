@@ -5,9 +5,9 @@ using System.Text;
 
 namespace PhysicsEngine {
 	enum TokenType { number, function, charString, arithmeticOp, syntaxChar, empty, closedBrace, openBrace, equalSign, variable }
-	enum CharType { number, letter, arithmeticOp, syntaxChar, plusOrMinusSign, brace, whitespace }
+	enum CharType { number, letter, arithmeticOp, syntaxChar, period, plusOrMinusSign, brace, whitespace }
 	class Tokenizer {
-		public readonly static HashSet<char> syntaxChars = new HashSet<char>() { ',', '.', '{', '}' };
+		public readonly static HashSet<char> syntaxChars = new HashSet<char>() { ',', '{', '}' };
 		public readonly static HashSet<char> arithmeticOperations = new HashSet<char>() { '/', '*', '^', '%', '=' };
 		
 		string compilerInput = string.Empty;
@@ -26,6 +26,9 @@ namespace PhysicsEngine {
 				val = c;
 				if (char.IsNumber(c)) {
 					currentCharTokenType = CharType.number;
+				}
+				if (c == '.') {
+					currentCharTokenType = CharType.period;
 				}
 				if (char.IsLetter(c) || c == '_')
 					currentCharTokenType = CharType.letter;
@@ -97,7 +100,7 @@ namespace PhysicsEngine {
 						//We're not dealing with a word - we're dealing with a number or +/-
 						if (currentStringTokenType != TokenType.charString) {
 							currentStringTokenType = TokenType.number;
-							charsThatAppendToCurrentString = new HashSet<CharType>() { CharType.number, CharType.letter };
+							charsThatAppendToCurrentString = new HashSet<CharType>() { CharType.number, CharType.letter, CharType.period };
 							syntaxIllegalCharTypes = new HashSet<CharType>() { };
 						} else {
 							currentStringTokenType = TokenType.charString;

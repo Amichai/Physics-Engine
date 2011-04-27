@@ -9,11 +9,13 @@ using Microsoft.Office.Interop.Word;
 using System.Reflection;
 using System.Diagnostics;
 using PhysicsEngine.Expression;
+using PhysicsEngine.Numbers;
+using PhysicsEngine;
 
 namespace Best.Editor {
 	public class TextEditor : System.Windows.Forms.UserControl {
 		#region A. COMPONENT
-		private System.Windows.Forms.RichTextBox richTextBox1;
+		public System.Windows.Forms.RichTextBox richTextBox1;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.Label lblCol;
@@ -607,15 +609,14 @@ namespace Best.Editor {
 				if (expressionString.EndsWith(";")) {
 					expressionString = expressionString.Remove(expressionString.Length - 1);
 					Expression exp = new Expression(expressionString);
-					richTextBox1.Text += exp.Output + "\n";
-					richTextBox1.Text += exp.ParseTree.Visualize("", true) + "\n";
+					richTextBox1.Text += "= " + exp.Output + "\n";
+					//richTextBox1.Text += exp.ParseTree.Visualize("", true) + "\n";
 					richTextBox1.SelectionStart = richTextBox1.Text.Length;
+					OutputLog.returnValues.Add(exp.ReturnValue);
 					richTextBox1.Focus();
 				}
-
 				//Move cursor to the end
 				//Don't run the method, if I just want a new line
-
 			}
 		}
 		private void richTextBox1_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e) {
@@ -750,3 +751,4 @@ namespace Best.Editor {
 		#endregion
 	}
 }
+;

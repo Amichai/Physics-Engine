@@ -7,7 +7,7 @@ using System.Diagnostics;
 namespace PhysicsEngine.Numbers {
 	public enum Restrictions { dontFactorMe, dontSetToFraction, dontFactorDontSetFraction, none };
 	public enum NumberType { integer, deci, fractional, imaginary, exponent };
-	class Value {
+	public class Value {
 		public Value(double doubleVal, Restrictions restrictions) {
 				InitDouble(doubleVal, restrictions);
 		}
@@ -114,8 +114,8 @@ namespace PhysicsEngine.Numbers {
 			if (asAFraction != null) {
 				output += "As a fraction: " + asAFraction.GetValueToString();
 				output += " = " + asAFraction.deciValue.ToString();
-				output += "\nNumerator: "+ asAFraction.numerator.FullVisualization();
-				output += "Denomenator: " + asAFraction.denominator.FullVisualization();
+				output += "\n     Numerator: "+ asAFraction.numerator.FullVisualization();
+				output += "     Denomenator: " + asAFraction.denominator.FullVisualization();
 			}
 			return output;
 		}

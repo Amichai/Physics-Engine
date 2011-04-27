@@ -100,6 +100,9 @@ namespace PhysicsEngine {
 					case TokenType.arithmeticOp:
 						parseTree.AppendOperator(token.TokenString);
 						break;
+					case TokenType.variable:
+						parseTree.AppendVariable(token.TokenString);
+						break;
 					default:
 						throw new Exception("This token type cannot be appended to the parse tree");
 				}

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PhysicsEngine.Numbers {
 	/// <summary>Takes a number in the constructor and builds a list of prime factors.</summary>
-	class Factors {
+	public class Factors {
 		/// <summary>
 		/// Contains the list of factors stored in two ways - regular list of ints and exponential form.
 		/// Helps concatinate lists for multiplication.
