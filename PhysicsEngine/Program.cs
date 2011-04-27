@@ -10,8 +10,7 @@ using PhysicsEngine.Numbers;
 namespace PhysicsEngine {
     class Program {
         static void Main(string[] args) {
-			new Expression.Expression("10*20*10");
-			Debug.Print(new Value(20, Restrictions.none).FullVisualization());
+			new Expression.Expression("10*20*10/3/3/3");
         }
     }
 }

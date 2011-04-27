@@ -16,6 +16,7 @@ namespace UserInterface {
 		static bool displayAllTokens	= true;
 		static bool displayInput		= true;
 		static bool displayOutput		= true;
+		static bool displayTrackTrace	= false;
 
 		public static string AddToLog(this string obj, LogType type){
 			objectLog.Add(new Tuple<object, LogType>(type.ToString().ToUpper() + ": " + obj.ToString(), type));
@@ -56,7 +57,8 @@ namespace UserInterface {
 					&& (!(obj.Item2 == LogType.input) || displayInput)
 					&& (!(obj.Item2 == LogType.output) || displayOutput)
 					&& (!(obj.Item2 == LogType.allTokens) || displayAllTokens)){
-					Debug.WriteLine("Called from: " + stackTrace.GetFrame(1).GetMethod().ToString());
+					if(displayTrackTrace)
+						Debug.WriteLine("Called from: " + stackTrace.GetFrame(1).GetMethod().ToString());
 					Debug.Print(obj.Item1.ToString());
 				}
 			}

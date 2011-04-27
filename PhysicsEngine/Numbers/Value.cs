@@ -102,8 +102,9 @@ namespace PhysicsEngine.Numbers {
 
 		public string FullVisualization() {
 			string output = string.Empty;
-			output += "Number: " + GetValueToString() + "\n";
-			output += factors.Visualize();
+			output += GetValueToString() + " ";
+			if(factors != null)
+				output += factors.Visualize();
 			output += "\n";
 			if (asAFraction != null) {
 				output += "As a fraction: " + asAFraction.GetValueToString();
