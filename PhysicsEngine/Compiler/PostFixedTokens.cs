@@ -58,7 +58,8 @@ namespace PhysicsEngine {
 				opValue = 1;
 			}
 			if (op == "*" ||
-				op == "/") {
+				op == "/" ||
+				op == "%") {
 				opValue = 2;
 			}
 			if (op == "^") {

@@ -8,14 +8,13 @@ namespace PhysicsEngine.Numbers {
 	public enum Restrictions { dontFactorMe, dontSetToFraction, dontFactorDontSetFraction, none };
 	public enum NumberType { integer, deci, fractional, imaginary, exponent };
 	public class Value {
+		#region constructorns
 		public Value(double doubleVal, Restrictions restrictions) {
 				InitDouble(doubleVal, restrictions);
 		}
-
 		public Value(double doubleVal, Factors factors, Restrictions restrictions) {
 			InitDouble(doubleVal, restrictions);
 		}
-
 		public Value(double realPart, double imaginaryPart, NumberType type) {
 			switch (type) {
 				case NumberType.imaginary:
@@ -37,8 +36,11 @@ namespace PhysicsEngine.Numbers {
 					break;
 			}
 		}
+		#endregion
 
 		private NumberType primaryNumType { get; set; }
+
+		MathNet.Numerics.Natural natural;
 
 		/// <summary>Decimal value</summary>
 		public void InitDouble(double val, Restrictions restrictions) {
@@ -50,6 +52,7 @@ namespace PhysicsEngine.Numbers {
 				if (restrictions != Restrictions.dontFactorMe && restrictions != Restrictions.dontFactorDontSetFraction) {
 					factors = new Factors((int)deciValue);
 				}
+				natural = new MathNet.Numerics.Natural();
 			}else if (restrictions != Restrictions.dontSetToFraction && restrictions != Restrictions.dontFactorDontSetFraction) {
 				asAFraction = decimalToFraction(deciValue);
 			}			
@@ -57,13 +60,15 @@ namespace PhysicsEngine.Numbers {
 		}
 		public Factors factors;
 
-		//TODO: Imaginary numbers
+		MathNet.Numerics.Complex complex;
 		/// <summary>Complex Numbers</summary>
 		public void InitComplexNum(double realPart, double imaginaryPart) {
 			this.realPart = new Value(realPart, Restrictions.none);
 			this.imaginaryPart = new Value(imaginaryPart, Restrictions.none);
 			this.deciValue = realPart;
 			this.primaryNumType = NumberType.imaginary;
+
+			complex = new MathNet.Numerics.Complex(realPart, imaginaryPart);
 		}
 
 		/// <summary>Fraction</summary>
@@ -72,6 +77,8 @@ namespace PhysicsEngine.Numbers {
 			this.denominator = new Value(denominator, Restrictions.dontSetToFraction);
 			this.deciValue = ((double)numerator / denominator);
 			this.primaryNumType = NumberType.fractional;
+
+			rational = new MathNet.Numerics.Rational(numerator, denominator);
 		}
 
 		/// <summary>Exponent</summary>
@@ -83,7 +90,8 @@ namespace PhysicsEngine.Numbers {
 		}
 		
 		public double deciValue = double.MinValue;
-
+		MathNet.Numerics.Rational rational;
+		
 		public Value asAFraction { get; set; }
 		public Value realPart { get; set; }
 		public Value imaginaryPart { get; set; }

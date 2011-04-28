@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MathNet;
 
 namespace PhysicsEngine.Numbers {
 	class BigInt {
@@ -10,6 +11,9 @@ namespace PhysicsEngine.Numbers {
 		public BigInt(double val){
 			doubleValue = val;
 		}
+
+		List<bool> leftOfDecimal = new List<bool>();
+		List<bool> rightOfDecimal = new List<bool>();
 		//Not yet being used...should be used
 		//TODO: Implement this.
 	}

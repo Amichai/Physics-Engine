@@ -21,9 +21,7 @@ namespace Best.Main {
 			// Required for Windows Form Designer support
 			//
 			InitializeComponent();
-			this.Focus();
-			this.textEditor1.Focus();
-			this.textEditor1.richTextBox1.Focus();
+			// TODO: figure out how to get focus to the text editor after initialization
 			//
 			// TODO: Add any constructor code after InitializeComponent call
 			//

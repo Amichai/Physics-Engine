@@ -602,7 +602,7 @@ namespace Best.Editor {
 				}
 			} else if (e.KeyChar == (char)9) {
 				richTextBox1.SelectionStart = richTextBox1.SelectionStart + 5;
-			} else if (e.KeyChar == 13) {
+			} else if (e.KeyChar == 13) { //ENTER key
 				int lastLine = richTextBox1.GetLineFromCharIndex(richTextBox1.SelectionStart) -1;
 				Debug.Print(richTextBox1.Lines[lastLine]);
 				string expressionString = richTextBox1.Lines[lastLine];
@@ -610,13 +610,11 @@ namespace Best.Editor {
 					expressionString = expressionString.Remove(expressionString.Length - 1);
 					Expression exp = new Expression(expressionString);
 					richTextBox1.Text += "= " + exp.Output + "\n";
-					//richTextBox1.Text += exp.ParseTree.Visualize("", true) + "\n";
+					//richTextBox1.Text += exp.ParseTree.Visualize("", true);
 					richTextBox1.SelectionStart = richTextBox1.Text.Length;
 					OutputLog.returnValues.Add(exp.ReturnValue);
 					richTextBox1.Focus();
 				}
-				//Move cursor to the end
-				//Don't run the method, if I just want a new line
 			}
 		}
 		private void richTextBox1_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e) {
